@@ -10,7 +10,10 @@
             "name": "Start App",
             "cwd": "${workspaceRoot}",
             "runtimeExecutable": "npm",
-            "runtimeArgs": ["run", "dev"],
-          },
+            "runtimeArgs": [
+                "run",
+                "dev"
+            ],
+        },
     ]
 }
