@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { TokenGate } from '@/components/TokenGate';
 import { getSession } from '@/utils/session';
+import { copilotApi } from 'copilot-node-sdk';
+import { need } from "@/utils/need";
 
 /**
  * The revalidate property determine's the cache TTL for this page and
@@ -14,6 +16,16 @@ async function Content({ searchParams }: { searchParams: SearchParams }) {
   // You can see these logs in the terminal where
   // you run `yarn dev`
   console.log({ data });
+
+  type CopilotInstance = ReturnType<typeof copilotApi>;
+  const apiKey = need<string>(process.env.COPILOT_API_KEY);
+
+  const copilot = copilotApi({apiKey});
+
+  const files = copilot.listFiles;  
+
+  console.log({files});
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
@@ -22,6 +34,9 @@ async function Content({ searchParams }: { searchParams: SearchParams }) {
           <code className="font-mono font-bold">
             {data.client ? data.client.givenName : data.company?.name}
           </code>
+        </p>
+        <p>
+          {files.toString()}
         </p>
         <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
           <a
